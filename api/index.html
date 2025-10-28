@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>API - ChatGroups</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "API";
+        var mkdocs_page_input_path = "api.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> ChatGroups
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../configurations/">Configurazioni</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../commands/">Comandi</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">API</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#dipendenza">Dipendenza</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#istanza-dellapi">Istanza dell'API</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#controllo-chat-attiva">Controllo chat attiva</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#utilizzare-lactionmanager">Utilizzare l'ActionManager</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#utilizzare-chatgroupmanager">Utilizzare ChatGroupManager</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">ChatGroups</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">API</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="integrazione-dellapi">Integrazione dell'API</h1>
+<p>L’API del nostro plugin è stata progettata per offrire agli sviluppatori un modo semplice e sicuro per interagire con le sue funzionalità principali, estendere il comportamento della chat e integrarsi con altri sistemi o plugin personalizzati.</p>
+<p>Per semplificare l’inclusione nel proprio progetto, l’API è resa disponibile come dipendenza esterna facilmente integrabile nei più comuni sistemi di build.</p>
+<h2 id="dipendenza">Dipendenza</h2>
+<p>Di seguito vengono riportate le istruzioni per importare correttamente la dipendenza nel proprio ambiente di sviluppo:</p>
+<ul>
+<li>Usando <strong>Maven</strong>:</li>
+</ul>
+<pre><code class="language-xml">&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;jitpack.io&lt;/id&gt;
+        &lt;url&gt;https://jitpack.io&lt;/url&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;com.github.MrFil27&lt;/groupId&gt;
+    &lt;artifactId&gt;ChatGroups&lt;/artifactId&gt;
+    &lt;version&gt;1.2.4&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<ul>
+<li>Usando <strong>Gradle (Kotlin DSL o Groovy)</strong>:</li>
+</ul>
+<pre><code class="language-groovy">dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+dependencies {
+    implementation 'com.github.MrFil27:ChatGroups:1.2.4'
+}
+</code></pre>
+<h2 id="istanza-dellapi">Istanza dell'API</h2>
+<p>Per accedere ai metodi dell’API, è sufficiente creare un’istanza della classe Control, che implementa l’interfaccia ChatGroupsAPI:</p>
+<pre><code class="language-java">package com.example.plugin;
+
+
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.entity.Player;
+
+import com.mrfil27.chatgroups.api.ChatGroupsAPI;
+import com.mrfil27.chatgroups.api.Control;
+
+public final class ExamplePlugin extends JavaPlugin {
+
+    private ChatGroupsAPI chatGroupsAPI;
+
+    @Override
+    public void onEnable() {
+        // Inizializza l'istanza dell'API
+        this.chatGroupsAPI = new Control();
+
+        getLogger().info(&quot;ChatGroups API inizializzata con successo!&quot;);
+    }
+
+    public ChatGroupsAPI getChatGroupsAPI() {
+        return chatGroupsAPI;
+    }
+}
+</code></pre>
+<h2 id="controllo-chat-attiva">Controllo chat attiva</h2>
+<p>A questo punto, puoi utilizzare getChatGroupsAPI() per accedere ai metodi dell’API da altre classi del tuo plugin. Possiamo ad esempio controllare se il player ha una chat attiva:</p>
+<pre><code class="language-java">Player player =  ...;
+
+if(chatGroupsAPI.hasActiveChat(player)){
+    player.sendMessage(&quot;Sei già in una chat attiva!&quot;);
+}else{
+    player.sendMessage(&quot;Non sei in nessuna chat attiva.&quot;);
+}
+</code></pre>
+<p>Questo è utile per controllare lo stato del giocatore prima di eseguire determinate azioni, come l’invio di messaggi o la creazione di nuovi gruppi.</p>
+<h2 id="utilizzare-lactionmanager">Utilizzare l'ActionManager</h2>
+<p>La classe <code>ActionManager</code> fornisce metodi per gestire le azioni di comunicazione:</p>
+<pre><code class="language-java">ActionManager actionManager = chatGroupsAPI.getActionManager();
+
+// Esempio: invia un messaggio gridato
+actionManager.scream(player, &quot;Attenzione a tutti!&quot;);
+
+// Esempio: invia un messaggio sussurrato
+actionManager.whisper(player, &quot;Ehi, questo è un messaggio privato.&quot;);
+
+// Esegue un comando o un’azione associata
+actionManager.executeCommand(player, &quot;Saluta Steve&quot;);
+</code></pre>
+<p><strong>NOTA: executeCommane() non esegue alcun comado, tale metodo stampa in chat un'azione eseguita dal player, equivalente al comando</strong> <code>/azione &lt;messaggio&gt;</code> <strong>.</strong></p>
+<h2 id="utilizzare-chatgroupmanager">Utilizzare ChatGroupManager</h2>
+<p>Ia classe <code>ChatGroupManager</code> permette di creare e amministrare gruppi di chat:</p>
+<pre><code class="language-java">ChatGroupManager groupManager = chatGroupsAPI.getGroupManager();
+
+// Crea un nuovo gruppo
+groupManager.create(&quot;TeamAlpha&quot;, player);
+
+// Aggiunge un membro al gruppo
+groupManager.addMember(&quot;TeamAlpha&quot;, anotherPlayer);
+
+// Rimuove un membro
+groupManager.removeMember(&quot;TeamAlpha&quot;, anotherPlayer);
+
+// Aggiunge un nuovo proprietario
+groupManager.addOwner(&quot;TeamAlpha&quot;, adminPlayer);
+
+// Attiva o disattiva la chat di gruppo per un giocatore
+groupManager.toggle(&quot;TeamAlpha&quot;, player);
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../commands/" class="btn btn-neutral float-left" title="Comandi"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../commands/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
